@@ -43,12 +43,12 @@ jobs:
             args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1_40p
             hand: left
-            size: ~
+            size: 40p
             fwext: hex
             args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1_40p
             hand: right
-            size: ~
+            size: 40p
             fwext: hex
             args: "-e ARDUX_REMIX=yes"
     steps:
