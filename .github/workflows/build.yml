@@ -97,7 +97,7 @@ jobs:
       - name: Prep artifacts
         run: |
             ls /qmk_firmware/.build/ ;
-            if [ "${{ matrix.layout }}" -eq "crkbd_rev1_40p" ];
+            if [ "${{ matrix.layout }}" = "crkbd_rev1_40p" ];
             then
               cp /qmk_firmware/.build/crkbd_rev1_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-crkbd_rev1-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
             else
