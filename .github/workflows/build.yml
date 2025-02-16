@@ -15,42 +15,42 @@ jobs:
             hand: left
             size: std
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
           - layout: ardux_thepaintbrush
             hand: right
             size: std
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
           - layout: ardux_thepaintbrush
             hand: left
             size: std
             fwext: uf2
-            args: "-e CONVERT_TO=promicro_rp2040"
+            args: "-e ARDUX_REMIX=yes -e CONVERT_TO=promicro_rp2040"
           - layout: ardux_thepaintbrush
             hand: right
             size: std
             fwext: uf2
-            args: "-e CONVERT_TO=promicro_rp2040"
+            args: "-e ARDUX_REMIX=yes -e CONVERT_TO=promicro_rp2040"
           - layout: crkbd_rev1
             hand: left
             size: big
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1
             hand: right
             size: big
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1
             hand: left
             size: 40p
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1
             hand: right
             size: 40p
             fwext: hex
-            args: ~
+            args: "-e ARDUX_REMIX=yes"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
