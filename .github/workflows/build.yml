@@ -99,7 +99,7 @@ jobs:
             ls /qmk_firmware/.build/ ;
             if [ "${{ matrix.layout }}" = "crkbd_rev1_40p" ];
             then
-              cp /qmk_firmware/.build/crkbd_rev1_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-crkbd_rev1-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
+              cp /qmk_firmware/.build/crkbd_rev1_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
             else
               cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
             fi
