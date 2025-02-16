@@ -95,7 +95,14 @@ jobs:
       - name: Debug - ls build artifact folder
         run: ls /qmk_firmware/.build
       - name: Prep artifacts
-        run: ls /qmk_firmware/.build/ ; cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }} 
+        run: |
+            ls /qmk_firmware/.build/ ;
+            if [ "${{ matrix.layout }}" -eq "crkbd_rev1_40p" ];
+            then
+              cp /qmk_firmware/.build/crkbd_rev1_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-crkbd_rev1-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
+            else
+              cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
+            fi
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
