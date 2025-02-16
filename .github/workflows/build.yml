@@ -31,36 +31,6 @@ jobs:
             size: std
             fwext: uf2
             args: "-e CONVERT_TO=promicro_rp2040"
-          - layout: faunchpad
-            hand: left
-            size: std
-            fwext: hex
-            args: ~
-          - layout: faunchpad
-            hand: right
-            size: std
-            fwext: hex
-            args: ~
-          - layout: ai03_soyuz
-            hand: left
-            size: std
-            fwext: hex
-            args: ~
-          - layout: ai03_soyuz
-            hand: right
-            size: std
-            fwext: hex
-            args: ~
-          - layout: geekboards_macropad_v2
-            hand: left
-            size: std
-            fwext: bin
-            args: ~
-          - layout: geekboards_macropad_v2
-            hand: right
-            size: std
-            fwext: bin
-            args: ~
           - layout: crkbd_rev1
             hand: left
             size: big
@@ -71,54 +41,6 @@ jobs:
             size: big
             fwext: hex
             args: ~
-          - layout: gboards_gergo
-            hand: left
-            size: big
-            fwext: hex
-            args: ~
-          - layout: gboards_gergo
-            hand: right
-            size: big
-            fwext: hex
-            args: ~
-          - layout: ferris_sweep
-            hand: left
-            size: big
-            fwext: hex
-            args: ~
-          - layout: ferris_sweep
-            hand: right
-            size: big
-            fwext: hex
-            args: ~
-          - layout: draculad
-            hand: left
-            size: big
-            fwext: hex
-            args: ~
-          - layout: draculad
-            hand: right
-            size: big
-            fwext: hex
-            args: ~
-          # - layout: boardsource_microdox
-          #   hand: left
-          #   size: big
-          #   fwext: hex
-          # - layout: boardsource_microdox
-          #   hand: right
-          #   size: big
-          #   fwext: hex
-          - layout: splitkb_kyria_rev2
-            hand: right
-            size: big
-            fwext: hex
-            args: ~
-          - layout: splitkb_kyria_rev2
-            hand: left
-            size: big
-            fwext: hex
-            args: ~
           - layout: crkbd_rev1
             hand: left
             size: 40p
@@ -126,44 +48,6 @@ jobs:
             args: ~
           - layout: crkbd_rev1
             hand: right
-            size: 40p
-            fwext: hex
-            args: ~
-          - layout: ferris_sweep
-            hand: left
-            size: 40p
-            fwext: hex
-            args: ~
-          - layout: ferris_sweep
-            hand: right
-            size: 40p
-            fwext: hex
-            args: ~
-          - layout: draculad
-            hand: left
-            size: 40p
-            fwext: hex
-            args: ~
-          - layout: draculad
-            hand: right
-            size: 40p
-            fwext: hex
-            args: ~
-          # - layout: boardsource_microdox
-          #   hand: left
-          #   size: 40p
-          #   fwext: hex
-          # - layout: boardsource_microdox
-          #   hand: right
-          #   size: 40p
-          #   fwext: hex
-          - layout: splitkb_kyria_rev2
-            hand: right
-            size: 40p
-            fwext: hex
-            args: ~
-          - layout: splitkb_kyria_rev2
-            hand: left
             size: 40p
             fwext: hex
             args: ~
