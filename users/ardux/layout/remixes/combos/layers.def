@@ -1,0 +1,5 @@
+// Copyright (c) 2021 Mike "KemoNine" Crosson
+// SPDX-License-Identifier: Apache-2.0
+
+//   NAME                            RESULT                         TRIGGER
+COMB(combo_layer_basemse_kmn,        TG(LAYER_ID_MOUSE),            KC_HOME, KC_DOWN, KC_END)
