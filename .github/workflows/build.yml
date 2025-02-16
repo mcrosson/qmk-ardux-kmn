@@ -43,12 +43,12 @@ jobs:
             args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1_40p
             hand: left
-            size: 40p
+            size: ~
             fwext: hex
             args: "-e ARDUX_REMIX=yes"
           - layout: crkbd_rev1_40p
             hand: right
-            size: 40p
+            size: ~
             fwext: hex
             args: "-e ARDUX_REMIX=yes"
     steps:
@@ -95,7 +95,7 @@ jobs:
       - name: Debug - ls build artifact folder
         run: ls /qmk_firmware/.build
       - name: Prep artifacts
-        run: cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }} 
+        run: ls /qmk_firmware/.build/ ; cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }} 
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
