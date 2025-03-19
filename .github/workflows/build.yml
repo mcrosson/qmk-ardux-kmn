@@ -25,12 +25,12 @@ jobs:
             hand: left
             size: std
             fwext: uf2
-            args: "-e ARDUX_REMIX=yes -e CONVERT_TO=promicro_rp2040"
+            args: "-e CONVERT_TO=promicro_rp2040 -e ARDUX_REMIX=yes"
           - layout: ardux_thepaintbrush
             hand: right
             size: std
             fwext: uf2
-            args: "-e ARDUX_REMIX=yes -e CONVERT_TO=promicro_rp2040"
+            args: "-e CONVERT_TO=promicro_rp2040 -e ARDUX_REMIX=yes"
           - layout: crkbd_rev1
             hand: left
             size: big
@@ -51,6 +51,16 @@ jobs:
             size: 40p
             fwext: hex
             args: "-e ARDUX_REMIX=yes"
+          - layout: crkbd_rev1_40p
+            hand: left
+            size: 40p
+            fwext: uf2
+            args: "-e ARDUX_REMIX=yes -e OLED_ENABLE=no -e ARDUX_LAYER_UNDERGLOW=yes -e CONVERT_TO=kb2040"
+          - layout: crkbd_rev1_40p
+            hand: right
+            size: 40p
+            fwext: uf2
+            args: "-e ARDUX_REMIX=yes -e OLED_ENABLE=no -e ARDUX_LAYER_UNDERGLOW=yes -e CONVERT_TO=kb2040"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -95,11 +105,14 @@ jobs:
       - name: Debug - ls build artifact folder
         run: ls /qmk_firmware/.build
       - name: Prep artifacts
+        shell: bash
         run: |
             ls /qmk_firmware/.build/ ;
-            if [ "${{ matrix.layout }}" = "crkbd_rev1_40p" ];
+            if [[ "${{ matrix.layout }}" =~ .*_40p$ ]];
             then
-              cp /qmk_firmware/.build/crkbd_rev1_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
+              layout="${{ matrix.layout }}"
+              base=${layout/%_40p}
+              cp /qmk_firmware/.build/${base}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout}}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
             else
               cp /qmk_firmware/.build/${{ matrix.layout }}_ardux.${{ matrix.fwext }} /qmk_firmware/.build/ardux-${{ matrix.layout }}-${{ matrix.size }}-${{ matrix.hand }}.${{ matrix.fwext }}
             fi
