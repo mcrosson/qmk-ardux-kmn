@@ -2,6 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 
+/////////////
+// kb2040 qwiic & neopixel support
+#ifdef CONVERT_TO_KB2040
+    #define SOFT_SERIAL_PIN D5
+    #ifdef ARDUX_LAYER_UNDERGLOW
+        #define RGB_DI_PIN 17
+        #ifdef ARDUX_SIZE_40P
+            #ifdef ARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY
+                #define RGBLIGHT_LED_COUNT 1
+            #else
+                #define RGBLIGHT_LED_COUNT 2
+                #define RGBLED_SPLIT { 1, 1 }
+            #endif
+        #else
+            #define RGBLIGHT_LED_COUNT 1
+        #endif
+    #endif
+#endif
+
 // /////////
 // User remixes / tweaks -- these take precidence above all else
 #if __has_include("../remixes/boards/crkbd_rev1.h")

@@ -14,7 +14,18 @@ TERMINAL_ENABLE = no
 VIA_ENABLE = no
 WPM_ENABLE = no
 ENCODER_ENABLE = no
-RGBLIGHT_ENABLE = no
+
+###########
+# RGB layer underglow
+ifeq ($(ARDUX_LAYER_UNDERGLOW), yes)
+	RGBLIGHT_ENABLE = yes
+	OPT_DEFS += -DARDUX_LAYER_UNDERGLOW
+	ifeq ($(ARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY), yes)
+		OPT_DEFS += -DARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY
+	endif
+else
+	RGBLIGHT_ENABLE = no
+endif
 
 ##########
 # Enable LTO if possible (graphics on avr mainly)

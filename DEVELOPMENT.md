@@ -41,6 +41,8 @@ cd /qmk_firmware/users/ardux
 # ENCODER_ENABLE whether or not to include encoder support. default: no ; uses just over 1k of rom space which is quite large
 # RGBLIGHT_ENABLE whether or not to turn on some underglow features. default: no ; uses a TON of rom space and we need a lot for 40% ardux to work
 # SPLIT_USB_DETECT use this option (see kemo builds) when using an unmodified miranda or old elite-c
+# ARDUX_LAYER_UNDERGLOW use this to enable layer underglow support. NOTE: this likely will *not work* with avr
+# ARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY use this to disable the layer underglow on the non 'main' half of a split for 40% ardux (ie. only light the side that corresponds to the handedness of the 40% layout config)
 qmk -v compile -e ALLOW_WARNINGS=yes
                -e ARDUX_SIZE=[std|big|40p] \
                -e ARDUX_HAND=[left|right] \
@@ -60,6 +62,8 @@ qmk -v compile -e ALLOW_WARNINGS=yes
                -e ONESHOT_TIMEOUT=1500 \
                -e ENCODER_ENABLE=[yes|no] \
                -e RGBLIGHT_ENABLE=[yes|no] \
+               -e ARDUX_LAYER_UNDERGLOW=[yes|no] \
+               -e ARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY=[yes|no]
        layout/[board.json]
 ```
 
@@ -72,17 +76,16 @@ An unmodified MelMicro and some knock off ProMicro boards require `-e SPLIT_USB_
 ```
 root@d8949d0fe972:/qmk_firmware/users/ardux# 
 # Corne (6 column) 40%
-rm -rf ../../.build/* && qmk -v compile \
-    -e SPLIT_USB_DETECT=yes \
-    -e OLED_BRIGHTNESS=64 \
-    -e PIMORONI_BRIGHTNESS=7 \
-    -e PIMORONI_RGB="255,165,0" \
-    -e ARDUX_PIMORONI=no \
-    -e ARDUX_EXCLAMATION=KC_SCLN \
+qmk clean -a && qmk compile \
+    -e ALLOW_WARNINGS=yes \
     -e ARDUX_SIZE=40p \
     -e ARDUX_HAND=left \
-    -e TAPPING_TERM=200 \
-    layout/crkbd_rev1_40p.json
+    -e ARDUX_LAYER_UNDERGLOW=yes \
+    -e ARDUX_LAYER_UNDERGLOW_ONLY_PRIMARY=yes \
+    -e ARDUX_REMIX=yes \
+	-e CONVERT_TO=kb2040 \
+	-e OLED_ENABLE=no \
+	layout/crkbd_rev1_40p.json
 
 # The Paintbrush
 rm -rf ../../.build/* && qmk -v compile \
@@ -187,70 +190,48 @@ Sometimes when you’re deep in combo shenanigans you need access to process_com
 
 Also see [http://combos.gboards.ca/docs/combos/](http://combos.gboards.ca/docs/manage/)
 
-## Visual Studio Code
-
-This repo is setup to allow doing local development using the `Dev Containers` features. If you're familiar with these features they should generally 'Just Work'.
-
 ## Docker
 
-### Run
+Below is an example of how to setup a Docker dev environment using a Linux computer.
 
 ``` sh
-# PowerShell
-#     Use ` instead of \
-#     Use ${PWD} instead of $(pwd)
-docker run --rm -it `
-  -v qmk_firmware:/qmk_firmware `
-  -v $(pwd)/.build:/qmk_firmware/.build `
-  -v $(pwd)/users/ardux:/qmk_firmware/users/ardux `
-  qmkfm/qmk_cli /bin/bash
- ```
+# Start container
+cd /scratch/keeb
+sudo docker run --rm -it -v .:/workspace ghcr.io/qmk/qmk_cli:latest /bin/bash
 
-### Update / Clone Sources
+# Get / setup sources
+git clone --branch 0.18.5 https://github.com/qmk/qmk_firmware.git \
+	/workspace/qmk_firmware
+git clone https://github.com/arduxio/qmk-ardux.git \
+	/workspace/qmk_ardux
+# Personal remix
+git clone https://github.com/mcrosson/keyboard.git \
+	/workspace/kmn_keeb
 
-``` sh
-# PowerShell
-#     Use ` instead of \
-docker run --rm -it \
-  -v qmk_firmware:/qmk_firmware \
-  qmkfm/qmk_cli /bin/bash
+# Setup ardux & remix inside qmk src
+ln -sf /workspace/qmk_ardux/keyboards/ardux \
+	/workspace/qmk_firmware/keyboards/ardux
+ln -sf /workspace/qmk_ardux/users/ardux \
+	/workspace/qmk_firmware/users/ardux
+# Personal remix
+ln -sf /workspace/kmn_keeb/qmk/users/ardux/layout/remixes/ \
+	/workspace/qmk_firmware/users/ardux/layout/remixes
 
-cd ~/qmk_firmware
-if [ -d ~/qmk_firmware/.git ]; 
-then 
-    cd ~/qmk_firmware;
-    git pull; 
-else 
-    git clone https://github.com/qmk/qmk_firmware.git ~/qmk_firmware/; 
-fi
-if [ ! -d ~/qmk_firmware/keyboards/ardux ];
-then
-    ln -s "~/qmk-ardux/keyboards/ardux" ~/qmk_firmware/keyboards/ardux;
-    echo "Created keyboards/ardux symlink";
-fi
-if [ ! -d ~/qmk_firmware/keyboards/faunchpad ];
-then
-    ln -s "~/qmk_gboards/keyboards/faunchpad" ~/qmk_firmware/keyboards/faunchpad;
-    echo "Created keyboards/faunchpad symlink";
-fi
-if [ ! -d ~/qmk_firmware/users/ardux ];
-then
-    ln -s "~/qmk-ardux/users/ardux" ~/qmk_firmware/users/ardux;
-    echo "Created users/ardux symlink";
-fi
-qmk setup -y;
+# Setup qmk
+/usr/bin/python3 -m pip install \
+	--break-system-packages --user \
+	-r /workspace/qmk_firmware/requirements.txt
+qmk setup -y -H /workspace/qmk_firmware
+qmk help # should show an error & compile as a sub command
+
+# Build ardux
+cd /workspace/qmk_firmware/users/ardux
+qmk clean
+qmk compile \
+    -e ALLOW_WARNINGS=yes \
+    -e ARDUX_SIZE=40p \
+    -e ARDUX_HAND=left \
+    -e CONVERT_TO=promicro_rp2040 \
+    -e ARDUX_REMIX=yes \
+	layout/crkbd_rev1_40p.json
 ```
-
-### Volumes
-
-#### QMK Sources
-
-`qmkfm/qmk_cli` lacks sources. Use named volume to speed dev and output
-
-#### ARDUX
-
-Need to have the `qmk/users/ardux` directory mounted at `/qmk_firmware/users/ardux` in Docker container
-
-#### Build output
-
-Need to have a local dir for build artifact extraction at `/qmk_firmware/.build`
